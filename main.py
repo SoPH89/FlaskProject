@@ -6,7 +6,7 @@ from discordwebhook import Discord
 
 app = Flask(__name__)
 
-
+#DB connection
 def get_db():
     conn = sqlite3.connect('discord.db')
     return conn
@@ -59,10 +59,11 @@ def get_messages():
     conn.row_factory = sqlite3.Row  # This ensures rows are returned as dictionary-like objects
     cursor = conn.cursor()
 
+    #Setting 30 minutes time
     now = datetime.now(timezone.utc)
     thirty_minutes_ago = now - timedelta(minutes=30)
 
-    # Use the correct column name for the timestamp
+
     cursor.execute("SELECT message FROM users WHERE timestamp >= ?", (thirty_minutes_ago,))
     messages = cursor.fetchall()
 
@@ -70,6 +71,7 @@ def get_messages():
 
     conn.close()
 
+    #Sending messages in the last 30 minutes to discord server
     if formatted_messages:
         discord_message_content = "\n".join([f"Message: {msg}" for msg in formatted_messages])
 
