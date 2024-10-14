@@ -70,6 +70,7 @@ def get_messages():
 
     conn.close()
 
+    #Sending messages in the last 30 minutes to Discord bot
     if formatted_messages:
         discord_message_content = "\n".join([f"Message: {msg}" for msg in formatted_messages])
 
